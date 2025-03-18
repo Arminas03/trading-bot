@@ -1,1 +1,9 @@
 myenv
+.vscode
+.idea
+config.json
+lean.json
+data
+storage
+__pycache__
+backtests
