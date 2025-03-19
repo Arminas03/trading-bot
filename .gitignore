@@ -1,13 +1,3 @@
 #general
 myenv
-.vscode
-.idea
-
-#Lean
-config.json
-lean.json
-data
-storage
 __pycache__
-backtests
-.ipynb_checkpoints
