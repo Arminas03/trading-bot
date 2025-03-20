@@ -1,5 +1,7 @@
 import backtrader as bt
-from buy_hold_spy import BuyHoldSpy, add_data
+from buy_hold_spy import BuyHoldSpy
+from basic_sma import BasicSma
+from utilities import add_data
 
 
 def add_analyzers(cerebro: bt.Cerebro):
@@ -18,10 +20,11 @@ def print_analysis(run):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(BuyHoldSpy)
+    cerebro.addstrategy(BasicSma)
+
     cerebro.broker.set_cash(10000)
 
-    add_data(cerebro)
+    add_data(cerebro, ["SPY"])
     add_analyzers(cerebro)
     
     run = cerebro.run()
