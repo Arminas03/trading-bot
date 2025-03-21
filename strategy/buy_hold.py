@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from strategy.base_strategy import BaseStrategy
 
 
-class BuyHoldSpy(BaseStrategy):
+class BuyHold(BaseStrategy):
     def __init__(self):
         self.order = None
 
