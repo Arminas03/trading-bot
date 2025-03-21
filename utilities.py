@@ -10,7 +10,7 @@ def add_data(cerebro: bt.Cerebro, tickers: list, start = "2015-01-01", end = dat
                 dataname = yf.download(
                     ticker, start, end, multi_level_index = False
                 )
-            )
+            ), name = ticker
         )
 
 
