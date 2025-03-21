@@ -1,6 +1,6 @@
 import backtrader as bt
 from datetime import datetime, timedelta
-from base_strategy import BaseStrategy
+from strategy.base_strategy import BaseStrategy
 
 
 class BasicSma(BaseStrategy):

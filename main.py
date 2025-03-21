@@ -1,6 +1,6 @@
 import backtrader as bt
-from buy_hold_spy import BuyHoldSpy
-from basic_sma import BasicSma
+from strategy.buy_hold_spy import BuyHoldSpy
+from strategy.basic_sma import BasicSma
 from utilities import add_data
 
 
