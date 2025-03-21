@@ -1,6 +1,7 @@
 import backtrader as bt
 from strategy.buy_hold import BuyHold
 from strategy.basic_sma import BasicSma
+from strategy.ma_crossover import MACrossover
 from utilities import add_data
 
 
@@ -20,7 +21,7 @@ def print_analysis(run):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(BasicSma)
+    cerebro.addstrategy(MACrossover)
 
     cerebro.broker.set_cash(10000)
 

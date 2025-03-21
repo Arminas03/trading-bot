@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from strategy.base_strategy import BaseStrategy
+from utilities import check_order_pending
 
 
 class BuyHold(BaseStrategy):
@@ -8,11 +9,8 @@ class BuyHold(BaseStrategy):
 
 
     def next(self):
-        if self.order:
-            if self.order.status in [self.order.Completed]:
-                self.order = None
-            else:
-                return
+        if check_order_pending(self.order):
+            return
 
         if self.datas[0].datetime.date(0) >= datetime.now().date() - timedelta(days=3):
             self.order = self.close()
