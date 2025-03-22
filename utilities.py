@@ -3,7 +3,7 @@ from datetime import datetime
 import yfinance as yf
 
 
-def add_data(cerebro: bt.Cerebro, tickers: list, start = "2015-01-01", end = datetime.today()):
+def add_data(cerebro: bt.Cerebro, tickers: list, start = "2014-01-01", end = "2025-01-01"):
     for ticker in tickers:
         cerebro.adddata(
             bt.feeds.PandasData(
