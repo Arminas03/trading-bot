@@ -1,5 +1,6 @@
 import backtrader as bt
-from strategy.buy_hold import BuyHold
+from strategy.long import Long
+from strategy.short import Short
 from strategy.basic_sma import BasicSma
 from strategy.ma_crossover import MACrossover
 from utilities import add_data
@@ -48,11 +49,11 @@ def strategy_analysis(run, initial_cash):
 def main():
     initial_cash = 10000
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(BasicSma)
+    cerebro.addstrategy(Short)
 
     cerebro.broker.set_cash(initial_cash)
 
-    add_data(cerebro, ["SPY"], start = "2014-12-01")
+    add_data(cerebro, ["SPY"], start = "2014-01-01")
     add_analyzers(cerebro)
     
     run = cerebro.run()
