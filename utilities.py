@@ -24,5 +24,18 @@ def check_order_pending(order):
     return False
 
 
+def short_liquidation(strategy):
+    if (
+            strategy.broker.get_value() < strategy.initial_cash * strategy.params.liquidation_threshold
+            and strategy.position.size < 0
+        ):
+            strategy.order = strategy.close()
+            strategy.liquidated = True
+            strategy.log(f"Liquidated")
+            return True
+
+    return False
+
+
 if __name__ == "__main__":
     pass

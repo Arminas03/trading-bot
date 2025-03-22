@@ -1,11 +1,11 @@
 from strategy.base_strategy import BaseStrategy
-from utilities import check_order_pending
+from utilities import *
 from datetime import datetime
 
 
 class Short(BaseStrategy):
     params = (
-        ("liquidation_threshold", 0.5),
+        ("liquidation_threshold", 0.1),
     )
 
     def __init__(self):
@@ -21,13 +21,9 @@ class Short(BaseStrategy):
         if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
             self.order = self.close()
             return
-        
 
-        if self.broker.get_value() < self.initial_cash * self.params.liquidation_threshold:
-            self.order = self.close()
-            self.liquidated = True
+        if short_liquidation(self):
             return
-
         
         if not self.position:
             self.order = self.sell(
