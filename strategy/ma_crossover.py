@@ -27,7 +27,7 @@ class MACrossover(BaseStrategy):
         if check_order_pending(self.order) or self.liquidated:
             return
 
-        if self.datas[0].datetime.date(0) >= datetime.now().date() - timedelta(days=3):
+        if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
             self.order = self.close()
             return
 

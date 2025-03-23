@@ -16,6 +16,4 @@ class Long(BaseStrategy):
             return
 
         if not self.position:
-            self.order = self.buy(
-                data=self.datas[0], size=self.broker.get_cash() // self.datas[0].close
-            )
+            self.order = self.buy(size=self.broker.get_cash() // self.datas[0].close)
