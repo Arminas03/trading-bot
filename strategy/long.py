@@ -7,7 +7,6 @@ class Long(BaseStrategy):
     def __init__(self):
         self.order = None
 
-
     def next(self):
         if check_order_pending(self.order):
             return
@@ -18,6 +17,5 @@ class Long(BaseStrategy):
 
         if not self.position:
             self.order = self.buy(
-                data = self.datas[0],
-                size = self.broker.get_cash() // self.datas[0].close
+                data=self.datas[0], size=self.broker.get_cash() // self.datas[0].close
             )

@@ -9,13 +9,14 @@ class BasicSma(BaseStrategy):
 
     def __init__(self):
         self.order = None
-        self.sma = bt.indicators.MovingAverageSimple(self.datas[0], period = self.params.sma_period)
-
+        self.sma = bt.indicators.MovingAverageSimple(
+            self.datas[0], period=self.params.sma_period
+        )
 
     def next(self):
         if check_order_pending(self.order):
             return
-            
+
         if self.datas[0].datetime.date(0) >= datetime.now().date() - timedelta(days=3):
             self.order = self.close()
             return
@@ -23,9 +24,7 @@ class BasicSma(BaseStrategy):
         if not self.position:
             if self.datas[0].close > self.sma[0]:
                 self.order = self.buy(
-                    size = self.broker.get_cash() // self.datas[0].close
+                    size=self.broker.get_cash() // self.datas[0].close
                 )
         elif self.datas[0].close < self.sma[0]:
-            self.order = self.sell(
-                size = self.position.size
-            )
+            self.order = self.sell(size=self.position.size)
