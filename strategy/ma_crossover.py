@@ -1,13 +1,13 @@
 import backtrader as bt
 from strategy.base_strategy import BaseStrategy
 from utilities import *
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class MACrossover(BaseStrategy):
     params = (
         ("slow_sma_period", 200),
-        ("fast_sma_period", 30),
+        ("fast_sma_period", 50),
         ("liquidation_threshold", 0.1),
     )
 
