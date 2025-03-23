@@ -76,11 +76,11 @@ def strategy_analysis(run):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(Long)
+    cerebro.addstrategy(Short)
 
     cerebro.broker.set_cash(10000)
 
-    add_data(cerebro, ["SPY"], start="2001-01-01")
+    add_data(cerebro, ["INTC", "GS"], start="2010-01-01")
     add_analyzers(cerebro)
 
     run = cerebro.run()
