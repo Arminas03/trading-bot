@@ -12,8 +12,13 @@ class Long(BaseStrategy):
             return
 
         if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
-            self.order = self.close()
+            for data in self.datas:
+                self.order = self.close(data=data)
             return
 
         if not self.position:
-            self.order = self.buy(size=self.broker.get_cash() // self.datas[0].close)
+            for data in self.datas:
+                self.order = self.buy(
+                    data=data,
+                    size=(self.broker.get_cash() // len(self.datas)) // data.close,
+                )

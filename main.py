@@ -18,13 +18,13 @@ def add_analyzers(cerebro: bt.Cerebro):
 def performance_metrics(run):
     print(
         f"Sharpe: {round(
-        run[0].analyzers.sharpe_ratio.get_analysis()["sharperatio"], 4
-    )}"
+            run[0].analyzers.sharpe_ratio.get_analysis()["sharperatio"], 4
+        )}"
     )
     print(
         f"Net profit: {round(
             run[0].analyzers.trade_analyzer.get_analysis().pnl.net.total, 2
-    )}"
+        )}"
     )
 
 
@@ -76,11 +76,11 @@ def strategy_analysis(run):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(Long)
+    cerebro.addstrategy(Short)
 
     cerebro.broker.set_cash(10000)
 
-    add_data(cerebro, ["SPY"], start="2001-01-01")
+    add_data(cerebro, ["INTC", "GS"], start="2010-01-01")
     add_analyzers(cerebro)
 
     run = cerebro.run()

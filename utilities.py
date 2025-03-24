@@ -29,7 +29,8 @@ def short_liquidation(strategy):
         < strategy.initial_cash * strategy.params.liquidation_threshold
         and strategy.position.size < 0
     ):
-        strategy.order = strategy.close()
+        for data in strategy.datas:
+            strategy.order = strategy.close(data=data)
         strategy.liquidated = True
         strategy.log(f"Liquidated")
         return True
