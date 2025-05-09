@@ -1,7 +1,7 @@
 import backtrader as bt
 from datetime import datetime, timedelta
 from strategy.base_strategy import BaseStrategy
-from utilities import check_order_pending
+from strategy.utilities import check_order_pending
 
 
 class BasicSma(BaseStrategy):

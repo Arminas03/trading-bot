@@ -1,26 +1,3 @@
-import backtrader as bt
-from datetime import datetime
-import yfinance as yf
-
-
-def add_data(
-    cerebro: bt.Cerebro,
-    tickers: list,
-    start="2014-01-01",
-    end="2025-01-01",
-    interval="1d",
-):
-    for ticker in tickers:
-        cerebro.adddata(
-            bt.feeds.PandasData(
-                dataname=yf.download(
-                    ticker, start, end, multi_level_index=False, interval=interval
-                )
-            ),
-            name=ticker,
-        )
-
-
 def check_order_pending(order):
     if order:
         if order.status in [order.Completed, order.Margin, order.Rejected]:

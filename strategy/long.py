@@ -1,6 +1,6 @@
 from datetime import datetime
 from strategy.base_strategy import BaseStrategy
-from utilities import check_order_pending
+from strategy.utilities import check_order_pending
 
 
 class Long(BaseStrategy):

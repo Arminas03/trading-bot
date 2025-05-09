@@ -1,5 +1,5 @@
 from strategy.base_strategy import BaseStrategy
-from utilities import *
+from strategy.utilities import *
 from datetime import datetime
 
 
