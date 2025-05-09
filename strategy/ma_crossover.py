@@ -12,6 +12,7 @@ class MACrossover(BaseStrategy):
     )
 
     def __init__(self):
+        super().__init__()
         self.order = None
         self.liquidated = False
         self.initial_cash = self.broker.get_cash()
@@ -25,10 +26,6 @@ class MACrossover(BaseStrategy):
 
     def next(self):
         if check_order_pending(self.order) or self.liquidated:
-            return
-
-        if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
-            self.order = self.close()
             return
 
         if short_liquidation(self):

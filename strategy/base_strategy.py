@@ -1,7 +1,11 @@
 import backtrader as bt
+import pandas as pd
 
 
 class BaseStrategy(bt.Strategy):
+    def __init__(self):
+        self.logs = []
+
     def log(self, txt, dt=None):
         dt = dt or self.datas[0].datetime.date(0)
         print(f"{dt.isoformat()} {txt}")
@@ -12,6 +16,15 @@ class BaseStrategy(bt.Strategy):
             return
 
         if order.status in [order.Completed]:
-            self.log(
-                f"{int(order.executed.size)}x{order.data._name} @ {round(order.executed.price, 2)}"
+            date = self.datas[0].datetime.date()
+            self.logs.append(
+                {
+                    "date": f"{date.year}-{date.month}-{date.day}",
+                    "product": order.data._name,
+                    "quantity": int(order.executed.size),
+                    "price": round(order.executed.price, 2),
+                }
             )
+
+    def stop(self):
+        pd.DataFrame(self.logs).to_excel("trades.xlsx", index=False)

@@ -8,6 +8,7 @@ class BasicSma(BaseStrategy):
     params = (("sma_period", 30),)
 
     def __init__(self):
+        super().__init__()
         self.order = None
         self.sma = bt.indicators.MovingAverageSimple(
             self.datas[0], period=self.params.sma_period
@@ -15,10 +16,6 @@ class BasicSma(BaseStrategy):
 
     def next(self):
         if check_order_pending(self.order):
-            return
-
-        if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
-            self.order = self.close()
             return
 
         if not self.position:

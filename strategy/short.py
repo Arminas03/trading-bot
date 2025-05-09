@@ -7,17 +7,13 @@ class Short(BaseStrategy):
     params = (("liquidation_threshold", 0.1),)
 
     def __init__(self):
+        super().__init__()
         self.order = None
         self.liquidated = False
         self.initial_cash = self.broker.get_cash()
 
     def next(self):
         if check_order_pending(self.order) or self.liquidated:
-            return
-
-        if self.datas[0].datetime.date(0) >= datetime(2024, 12, 30).date():
-            for data in self.datas:
-                self.order = self.close(data=data)
             return
 
         if short_liquidation(self):

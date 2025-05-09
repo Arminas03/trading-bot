@@ -1,0 +1,96 @@
+import plotly.graph_objects as go
+from dash import Dash, html, dcc
+import dash_bootstrap_components as dbc
+
+
+def get_Sharpe_ratio(run, round_to=4):
+    return round(
+        run[0].analyzers.sharpe_ratio.get_analysis()["sharperatio"] or 0, round_to
+    )
+
+
+def get_net_profit(run, round_to=2):
+    return round(run[0].analyzers.time_return.get_final_return(), round_to)
+
+
+def plot_strategy_equity(returns, dates):
+    open_returns = returns[:-1]
+    close_returns = returns[1:]
+
+    figure = go.Figure(
+        data=go.Candlestick(
+            x=dates, open=open_returns, high=returns, low=returns, close=close_returns
+        )
+    )
+    figure.update_layout(title="Equity", yaxis_title="$")
+
+    return figure
+
+
+def get_time_return_plot(time_returns, dates):
+    for i in range(len(time_returns)):
+        if i == 0:
+            time_returns[i] = 10000
+            continue
+        time_returns[i] = time_returns[i - 1] * (1 + time_returns[i])
+
+    return plot_strategy_equity(time_returns, dates)
+
+
+def get_trade_distribution_plot(trade_pnl):
+    pnl_figure = go.Figure(
+        data=[
+            go.Histogram(
+                x=[trade_pnl[trade_ref]["pnl"] for trade_ref in trade_pnl.keys()]
+            )
+        ]
+    )
+    pnl_figure.update_layout(
+        title="Trade P&L", xaxis_title="P&L", yaxis_title="Frequency"
+    )
+
+    return pnl_figure
+
+
+def render_metrics(metrics):
+    return [
+        dbc.Col(
+            html.P([html.Span(f"{metric}: ", className="fw-bold"), value]), width="auto"
+        )
+        for metric, value in metrics.items()
+    ]
+
+
+def run_dash(metrics, plots):
+    app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+    app.layout = dbc.Container(
+        [
+            html.H1("Backtest Results", className="mt-3"),
+            dbc.Row(render_metrics(metrics), className="mb-4", justify="start"),
+            dcc.Graph(figure=plots["time_return_plot"]),
+            dcc.Graph(figure=plots["trade_distribution_plot"]),
+        ],
+        fluid=True,
+    )
+
+    app.run(debug=False)
+
+
+def strategy_analysis(run):
+    metrics = {
+        "Sharpe ratio": get_Sharpe_ratio(run),
+        "Net profit": f"${get_net_profit(run)}",
+    }
+
+    plots = {
+        "time_return_plot": get_time_return_plot(
+            list(run[0].analyzers.time_return.get_return_dict().values()),
+            list(run[0].analyzers.time_return.get_return_dict().keys()),
+        ),
+        "trade_distribution_plot": get_trade_distribution_plot(
+            run[0].analyzers.trade_pnl_analyzer.get_analysis()
+        ),
+    }
+
+    run_dash(metrics, plots)
