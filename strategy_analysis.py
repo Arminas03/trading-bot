@@ -27,10 +27,10 @@ def plot_strategy_equity(returns, dates):
     return figure
 
 
-def get_time_return_plot(time_returns, dates):
+def get_time_return_plot(time_returns, dates, starting_cash):
     for i in range(len(time_returns)):
         if i == 0:
-            time_returns[i] = 10000
+            time_returns[i] = starting_cash
             continue
         time_returns[i] = time_returns[i - 1] * (1 + time_returns[i])
 
@@ -87,6 +87,7 @@ def strategy_analysis(run):
         "time_return_plot": get_time_return_plot(
             list(run[0].analyzers.time_return.get_return_dict().values()),
             list(run[0].analyzers.time_return.get_return_dict().keys()),
+            run[0].analyzers.time_return.get_starting_cash(),
         ),
         "trade_distribution_plot": get_trade_distribution_plot(
             run[0].analyzers.trade_pnl_analyzer.get_analysis()

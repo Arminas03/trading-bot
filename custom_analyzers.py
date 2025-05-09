@@ -35,6 +35,9 @@ class ReturnAnalyzer(bt.Analyzer):
     def get_return_dict(self):
         return self.returns
 
+    def get_starting_cash(self):
+        return self.initial_cash
+
     def get_final_return(self):
         ret = self.initial_cash
         for r in self.returns.values():

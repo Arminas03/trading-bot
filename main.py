@@ -17,7 +17,7 @@ def add_analyzers(cerebro: bt.Cerebro):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(Long)
+    cerebro.addstrategy(BasicSma)
 
     cerebro.broker.set_cash(10000)
 
