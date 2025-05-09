@@ -3,14 +3,12 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
 
-def get_Sharpe_ratio(run, round_to=4):
-    return round(
-        run[0].analyzers.sharpe_ratio.get_analysis()["sharperatio"] or 0, round_to
-    )
+def get_sharpe_ratio(run, round_to=4):
+    return round(run[0].analyzers.return_analyzer.get_sharpe_ratio() or 0, round_to)
 
 
 def get_net_profit(run, round_to=2):
-    return round(run[0].analyzers.time_return.get_final_return(), round_to)
+    return round(run[0].analyzers.return_analyzer.get_final_return(), round_to)
 
 
 def plot_strategy_equity(returns, dates):
@@ -79,15 +77,15 @@ def run_dash(metrics, plots):
 
 def strategy_analysis(run):
     metrics = {
-        "Sharpe ratio": get_Sharpe_ratio(run),
+        "Sharpe ratio": get_sharpe_ratio(run),
         "Net profit": f"${get_net_profit(run)}",
     }
 
     plots = {
         "time_return_plot": get_time_return_plot(
-            list(run[0].analyzers.time_return.get_return_dict().values()),
-            list(run[0].analyzers.time_return.get_return_dict().keys()),
-            run[0].analyzers.time_return.get_starting_cash(),
+            list(run[0].analyzers.return_analyzer.get_return_dict().values()),
+            list(run[0].analyzers.return_analyzer.get_return_dict().keys()),
+            run[0].analyzers.return_analyzer.get_starting_cash(),
         ),
         "trade_distribution_plot": get_trade_distribution_plot(
             run[0].analyzers.trade_pnl_analyzer.get_analysis()

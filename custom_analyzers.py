@@ -1,5 +1,6 @@
 import backtrader as bt
 from datetime import datetime
+import numpy as np
 
 
 class TradePnlAnalyzer(bt.Analyzer):
@@ -20,17 +21,21 @@ class TradePnlAnalyzer(bt.Analyzer):
 class ReturnAnalyzer(bt.Analyzer):
     def __init__(self):
         self.returns = dict()
+        self.prev_portfolio_value = None
 
     def start(self):
         self.initial_cash = self.strategy.broker.startingcash
 
     def next(self):
-        if len(self.data) <= 1:
+        if not self.prev_portfolio_value or self.prev_portfolio_value == 0:
+            self.prev_portfolio_value = self.strategy.broker.getvalue()
             return
 
         self.returns[self.data.datetime.datetime(0)] = (
-            self.data.close[0] / self.data.close[-1] - 1
+            self.strategy.broker.getvalue() / self.prev_portfolio_value - 1
         )
+
+        self.prev_portfolio_value = self.strategy.broker.getvalue()
 
     def get_return_dict(self):
         return self.returns
@@ -42,4 +47,10 @@ class ReturnAnalyzer(bt.Analyzer):
         ret = self.initial_cash
         for r in self.returns.values():
             ret *= 1 + r
-        return ret - 1
+        return ret - self.initial_cash
+
+    def get_sharpe_ratio(self, risk_free_rate=0.0):
+        excess_returns = np.array(list(self.returns.values())) - risk_free_rate
+        if len(excess_returns) < 2:
+            return float("nan")
+        return np.mean(excess_returns) / np.std(excess_returns, ddof=1)

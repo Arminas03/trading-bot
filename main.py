@@ -10,18 +10,17 @@ from datetime import datetime
 
 
 def add_analyzers(cerebro: bt.Cerebro):
-    cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name="sharpe_ratio")
-    cerebro.addanalyzer(ReturnAnalyzer, _name="time_return")
+    cerebro.addanalyzer(ReturnAnalyzer, _name="return_analyzer")
     cerebro.addanalyzer(TradePnlAnalyzer, _name="trade_pnl_analyzer")
 
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(BasicSma)
+    cerebro.addstrategy(MACrossover)
 
     cerebro.broker.set_cash(10000)
 
-    add_data(cerebro, ["SPY"], start="2010-01-01", end="2025-05-09", interval="1d")
+    add_data(cerebro, ["AAPL"], start="2025-05-02", end="2025-05-09", interval="1m")
     add_analyzers(cerebro)
 
     run = cerebro.run()

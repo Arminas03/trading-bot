@@ -19,7 +19,7 @@ class BaseStrategy(bt.Strategy):
             date = self.datas[0].datetime.date()
             self.logs.append(
                 {
-                    "date": f"{date.year}-{date.month}-{date.day}",
+                    "date": f"{self.datas[0].datetime.datetime(0).strftime("%Y-%m-%d %H:%M:%S")}",
                     "product": order.data._name,
                     "quantity": int(order.executed.size),
                     "price": round(order.executed.price, 2),
