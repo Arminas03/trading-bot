@@ -1,10 +1,16 @@
 import plotly.graph_objects as go
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import math
 
 
-def get_sharpe_ratio(run, round_to=4):
-    return round(run[0].analyzers.return_analyzer.get_sharpe_ratio() or 0, round_to)
+def get_sharpe_ratio(run, sharpe_annualisation, round_to=4):
+    return round(
+        run[0].analyzers.return_analyzer.get_sharpe_ratio()
+        * math.sqrt(sharpe_annualisation)
+        or 0,
+        round_to,
+    )
 
 
 def get_net_profit(run, round_to=2):
@@ -12,14 +18,15 @@ def get_net_profit(run, round_to=2):
 
 
 def plot_strategy_equity(returns, dates):
-    open_returns = returns[:-1]
-    close_returns = returns[1:]
-
-    figure = go.Figure(
-        data=go.Candlestick(
-            x=dates, open=open_returns, high=returns, low=returns, close=close_returns
-        )
-    )
+    # open_returns = returns[:-1]
+    # close_returns = returns[1:]
+    #
+    # figure = go.Figure(
+    #     data=go.Candlestick(
+    #         x=dates, open=open_returns, high=returns, low=returns, close=close_returns
+    #     )
+    # )
+    figure = go.Figure(data=go.Line(x=dates, y=returns))
     figure.update_layout(title="Equity", yaxis_title="$")
 
     return figure
@@ -59,12 +66,15 @@ def render_metrics(metrics):
     ]
 
 
-def run_dash(metrics, plots):
+def run_dash(metrics, plots, dash_name):
     app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
     app.layout = dbc.Container(
         [
-            html.H1("Backtest Results", className="mt-3"),
+            html.H1(
+                "Backtest Results" + f": {dash_name}" if dash_name else "",
+                className="mt-3",
+            ),
             dbc.Row(render_metrics(metrics), className="mb-4", justify="start"),
             dcc.Graph(figure=plots["time_return_plot"]),
             dcc.Graph(figure=plots["trade_distribution_plot"]),
@@ -75,9 +85,9 @@ def run_dash(metrics, plots):
     app.run(debug=False)
 
 
-def strategy_analysis(run):
+def strategy_analysis(run, dash_name="", sharpe_annualisation=1):
     metrics = {
-        "Sharpe ratio": get_sharpe_ratio(run),
+        "Sharpe ratio": get_sharpe_ratio(run, sharpe_annualisation),
         "Net profit": f"${get_net_profit(run)}",
     }
 
@@ -92,4 +102,4 @@ def strategy_analysis(run):
         ),
     }
 
-    run_dash(metrics, plots)
+    run_dash(metrics, plots, dash_name)

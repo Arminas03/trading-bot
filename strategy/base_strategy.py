@@ -16,12 +16,11 @@ class BaseStrategy(bt.Strategy):
             return
 
         if order.status in [order.Completed]:
-            date = self.datas[0].datetime.date()
             self.logs.append(
                 {
                     "date": f"{self.datas[0].datetime.datetime(0).strftime("%Y-%m-%d %H:%M:%S")}",
                     "product": order.data._name,
-                    "quantity": int(order.executed.size),
+                    "quantity": round(order.executed.size, 2),
                     "price": round(order.executed.price, 2),
                 }
             )
