@@ -5,17 +5,11 @@ from datetime import datetime
 
 
 class MACrossover(BaseStrategy):
-    params = (
-        ("slow_sma_period", 200),
-        ("fast_sma_period", 50),
-        ("liquidation_threshold", 0.1),
-    )
+    params = (("slow_sma_period", 200), ("fast_sma_period", 50))
 
     def __init__(self):
         super().__init__()
         self.order = None
-        self.liquidated = False
-        self.initial_cash = self.broker.get_cash()
 
         self.slow_sma = bt.indicators.MovingAverageSimple(
             self.datas[0], period=self.params.slow_sma_period
@@ -28,7 +22,7 @@ class MACrossover(BaseStrategy):
         if check_order_pending(self.order) or self.liquidated:
             return
 
-        if short_liquidation(self):
+        if liquidation(self, True):
             return
 
         if not self.position:

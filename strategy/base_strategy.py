@@ -5,6 +5,8 @@ import pandas as pd
 class BaseStrategy(bt.Strategy):
     def __init__(self):
         self.logs = []
+        self.liquidated = False
+        self.liquidation_threshold = 0.1
 
     def log(self, txt, dt=None):
         dt = dt or self.datas[0].datetime.date(0)

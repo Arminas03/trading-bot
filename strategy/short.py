@@ -4,19 +4,15 @@ from datetime import datetime
 
 
 class Short(BaseStrategy):
-    params = (("liquidation_threshold", 0.1),)
-
     def __init__(self):
         super().__init__()
         self.order = None
-        self.liquidated = False
-        self.initial_cash = self.broker.get_cash()
 
     def next(self):
         if check_order_pending(self.order) or self.liquidated:
             return
 
-        if short_liquidation(self):
+        if liquidation(self, True):
             return
 
         if not self.position:

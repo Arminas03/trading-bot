@@ -23,9 +23,6 @@ class ReturnAnalyzer(bt.Analyzer):
         self.returns = dict()
         self.prev_portfolio_value = None
 
-    def start(self):
-        self.initial_cash = self.strategy.broker.startingcash
-
     def next(self):
         if not self.prev_portfolio_value or self.prev_portfolio_value == 0:
             self.prev_portfolio_value = self.strategy.broker.getvalue()
@@ -41,13 +38,13 @@ class ReturnAnalyzer(bt.Analyzer):
         return self.returns
 
     def get_starting_cash(self):
-        return self.initial_cash
+        return self.strategy.broker.startingcash
 
     def get_final_return(self):
-        ret = self.initial_cash
+        ret = self.strategy.broker.startingcash
         for r in self.returns.values():
             ret *= 1 + r
-        return ret - self.initial_cash
+        return ret - self.strategy.broker.startingcash
 
     def get_sharpe_ratio(self, risk_free_rate=0.0):
         excess_returns = np.array(list(self.returns.values())) - risk_free_rate

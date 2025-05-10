@@ -7,6 +7,7 @@ from strategy.long import Long
 from strategy.short import Short
 from strategy.basic_sma import BasicSma
 from strategy.ma_crossover import MACrossover
+from strategy.market_making import MarketMaking
 
 
 def add_analyzers(cerebro: bt.Cerebro):
@@ -16,7 +17,7 @@ def add_analyzers(cerebro: bt.Cerebro):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(MACrossover)
+    cerebro.addstrategy(MarketMaking)
 
     cerebro.broker.set_cash(10000)
 
@@ -31,9 +32,7 @@ def main():
     add_analyzers(cerebro)
 
     run = cerebro.run()
-    strategy_analysis(
-        run, dash_name="MA Crossover BTC", sharpe_annualisation=60 * 24 * 365
-    )
+    strategy_analysis(run, dash_name="MM BTC", sharpe_annualisation=60 * 24 * 365)
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ def plot_strategy_equity(returns, dates):
     #         x=dates, open=open_returns, high=returns, low=returns, close=close_returns
     #     )
     # )
-    figure = go.Figure(data=go.Line(x=dates, y=returns))
+    figure = go.Figure(data=go.Scatter(x=dates, y=returns, mode="lines"))
     figure.update_layout(title="Equity", yaxis_title="$")
 
     return figure
