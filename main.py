@@ -15,13 +15,13 @@ def add_analyzers(cerebro: bt.Cerebro):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(BasicSma)
+    cerebro.addstrategy(MACrossover)
 
     cerebro.broker.set_cash(10000)
 
     add_polygon_data(
         cerebro,
-        ["SPY"],
+        ["X:BTCUSD"],
         PolygonDataConfig(
             multiplier=1, timespan="minute", from_="2025-01-01", to="2025-05-09"
         ),

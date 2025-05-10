@@ -23,5 +23,5 @@ class Short(BaseStrategy):
             for data in self.datas:
                 self.order = self.sell(
                     data=data,
-                    size=(self.broker.get_cash() // len(self.datas)) // data.close,
+                    size=(self.broker.get_cash() / len(self.datas)) / data.close,
                 )

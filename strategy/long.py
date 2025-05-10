@@ -1,4 +1,3 @@
-from datetime import datetime
 from strategy.base_strategy import BaseStrategy
 from strategy.utilities import check_order_pending
 
@@ -16,5 +15,5 @@ class Long(BaseStrategy):
             for data in self.datas:
                 self.order = self.buy(
                     data=data,
-                    size=(self.broker.get_cash() // len(self.datas)) // data.close,
+                    size=(self.broker.get_cash() / len(self.datas)) / data.close,
                 )

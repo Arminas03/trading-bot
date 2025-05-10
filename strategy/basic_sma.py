@@ -20,8 +20,6 @@ class BasicSma(BaseStrategy):
 
         if not self.position:
             if self.datas[0].close > self.sma[0]:
-                self.order = self.buy(
-                    size=self.broker.get_cash() // self.datas[0].close
-                )
+                self.order = self.buy(size=self.broker.get_cash() / self.datas[0].close)
         elif self.datas[0].close < self.sma[0]:
             self.order = self.sell(size=self.position.size)

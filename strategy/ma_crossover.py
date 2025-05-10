@@ -33,12 +33,10 @@ class MACrossover(BaseStrategy):
 
         if not self.position:
             if self.slow_sma[0] < self.fast_sma[0]:
-                self.order = self.buy(
-                    size=self.broker.get_cash() // self.datas[0].close
-                )
+                self.order = self.buy(size=self.broker.get_cash() / self.datas[0].close)
             if self.slow_sma[0] > self.fast_sma[0]:
                 self.order = self.sell(
-                    size=self.broker.get_cash() // self.datas[0].close
+                    size=self.broker.get_cash() / self.datas[0].close
                 )
         else:
             if (self.position.size < 0 and self.slow_sma[0] < self.fast_sma[0]) or (
