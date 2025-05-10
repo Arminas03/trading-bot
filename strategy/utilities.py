@@ -16,6 +16,8 @@ def liquidation(strategy, only_short=False):
     ):
         for data in strategy.datas:
             strategy.order = strategy.close(data=data)
+        for order in list(strategy.broker.orders):
+            strategy.cancel(order)
         strategy.liquidated = True
         strategy.log(f"Liquidated")
         return True
