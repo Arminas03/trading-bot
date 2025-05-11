@@ -4,10 +4,19 @@ import dash_bootstrap_components as dbc
 import math
 
 
-def get_sharpe_ratio(run, sharpe_annualisation, round_to=4):
+def get_sharpe_ratio(run, annualisation_const, round_to=4):
     return round(
         run[0].analyzers.return_analyzer.get_sharpe_ratio()
-        * math.sqrt(sharpe_annualisation)
+        * math.sqrt(annualisation_const)
+        or 0,
+        round_to,
+    )
+
+
+def get_sortino_ratio(run, annualisation_const, round_to=4):
+    return round(
+        run[0].analyzers.return_analyzer.get_sortino_ratio()
+        * math.sqrt(annualisation_const)
         or 0,
         round_to,
     )
@@ -85,10 +94,11 @@ def run_dash(metrics, plots, dash_name):
     app.run(debug=False)
 
 
-def strategy_analysis(run, dash_name="", sharpe_annualisation=1):
+def strategy_analysis(run, dash_name="", annualisation_const=1):
     metrics = {
-        "Sharpe ratio": get_sharpe_ratio(run, sharpe_annualisation),
         "Net profit": f"${get_net_profit(run)}",
+        "Sharpe ratio": get_sharpe_ratio(run, annualisation_const),
+        "Sortino ratio": get_sortino_ratio(run, annualisation_const),
     }
 
     plots = {

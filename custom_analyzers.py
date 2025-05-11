@@ -48,6 +48,18 @@ class ReturnAnalyzer(bt.Analyzer):
 
     def get_sharpe_ratio(self, risk_free_rate=0.0):
         excess_returns = np.array(list(self.returns.values())) - risk_free_rate
-        if len(excess_returns) < 2:
-            return float("nan")
-        return np.mean(excess_returns) / np.std(excess_returns, ddof=1)
+        return (
+            np.mean(excess_returns) / np.std(excess_returns, ddof=1)
+            if len(excess_returns) > 1
+            else float("nan")
+        )
+
+    def get_sortino_ratio(self, risk_free_rate=0.0):
+        excess_returns = np.array(list(self.returns.values())) - risk_free_rate
+        negative_returns = excess_returns[excess_returns < 0]
+
+        return (
+            np.mean(excess_returns) / np.std(negative_returns, ddof=1)
+            if len(negative_returns) > 1
+            else float("nan")
+        )

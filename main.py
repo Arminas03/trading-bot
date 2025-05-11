@@ -17,7 +17,7 @@ def add_analyzers(cerebro: bt.Cerebro):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(MarketMaking)
+    cerebro.addstrategy(MACrossover)
 
     cerebro.broker.set_cash(10000)
 
@@ -32,7 +32,9 @@ def main():
     add_analyzers(cerebro)
 
     run = cerebro.run()
-    strategy_analysis(run, dash_name="MM BTC", sharpe_annualisation=60 * 24 * 365)
+    strategy_analysis(
+        run, dash_name="MA Crossover BTC", annualisation_const=60 * 24 * 365
+    )
 
 
 if __name__ == "__main__":
