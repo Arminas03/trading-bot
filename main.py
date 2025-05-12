@@ -26,7 +26,7 @@ def main():
         cerebro,
         ["C:USDEUR"],
         PolygonDataConfig(
-            multiplier=1, timespan="minute", from_="2024-12-01", to="2025-05-01"
+            multiplier=1, timespan="minute", from_="2018-01-01", to="2018-04-01"
         ),
     )
 
