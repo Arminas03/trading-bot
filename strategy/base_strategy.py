@@ -14,7 +14,7 @@ class BaseStrategy(bt.Strategy):
 
     def notify_order(self, order):
         if order.status in [order.Rejected, order.Canceled, order.Margin]:
-            self.log("Order Rejected/Canceled")
+            # self.log("Order Rejected/Canceled")
             return
 
         if order.status in [order.Completed]:
