@@ -8,6 +8,7 @@ from strategy.short import Short
 from strategy.basic_sma import BasicSma
 from strategy.ma_crossover import MACrossover
 from strategy.market_making import MarketMaking
+from strategy.mean_reversion import MeanReversion
 
 
 def add_analyzers(cerebro: bt.Cerebro):
@@ -17,24 +18,22 @@ def add_analyzers(cerebro: bt.Cerebro):
 
 def main():
     cerebro = bt.Cerebro()
-    cerebro.addstrategy(MACrossover)
+    cerebro.addstrategy(MeanReversion)
 
     cerebro.broker.set_cash(10000)
 
     add_polygon_data(
         cerebro,
-        ["X:BTCUSD"],
+        ["C:USDEUR"],
         PolygonDataConfig(
-            multiplier=1, timespan="minute", from_="2025-01-01", to="2025-05-09"
+            multiplier=1, timespan="minute", from_="2024-01-01", to="2024-06-01"
         ),
     )
 
     add_analyzers(cerebro)
 
     run = cerebro.run()
-    strategy_analysis(
-        run, dash_name="MA Crossover BTC", annualisation_const=60 * 24 * 365
-    )
+    strategy_analysis(run, dash_name="Long BTC", annualisation_const=60 * 24 * 365)
 
 
 if __name__ == "__main__":
